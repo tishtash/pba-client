@@ -4,12 +4,18 @@
   "description": "Live Eye Surveillance Push Button Alert Client",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "node build.js",
+    "deploy": "npm run build && aws s3 sync ./zip/ s3://liveeye-report-assets/softwares && aws cloudfront create-invalidation --distribution-id EE3FMV9BF8G8K --paths '/softwares/*'",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Live Eye Surveillance L.L.C.",
   "license": "ISC",
   "dependencies": {
     "socket.io-client": "^2.3.0",
     "node-notifier": "^6.0.0"
+  },
+  "devDependencies": {
+    "bestzip": "^2.1.5"
   }
 }

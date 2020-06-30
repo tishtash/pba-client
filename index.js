@@ -1,11 +1,12 @@
 const notifier = require("node-notifier");
 const path = require("path");
-const client = require("socket.io-client")("http://192.168.0.13:80", {
-  path: "/alert-server"
+const client = require("socket.io-client")("https://pba.myliveeye.com", {
+  path: "/alert/socket.io",
+  reconnectionDelay: 30000,
+  randomizationFactor: 2
 });
-EnableAlertOnce = true;
 
-client.on("alert", function(data) {
+client.on("store-alert", function(data) {
   const options = {
     title: "Live Eye Surveillance",
     subtitle: "Push Button Alert",
@@ -41,13 +42,13 @@ client.on("connect", function() {
   }
 });
 client.on("disconnect", function() {
-  console.log(`${new Date()}::Client Disconnected`);
+  console.log(`${new Date()}::Application Disconnected`);
   const options = {
     title: "Live Eye Surveillance",
     subtitle: "Failure",
     message: `Disconnected with the server`,
     icon: path.join(__dirname, "logo.png"),
-    sound: "Notification.Looping.Alarm"
+    sound: "Notification.Looping.Alarm2"
   };
   try {
     notifier.notify(options);
@@ -57,20 +58,17 @@ client.on("disconnect", function() {
 });
 
 client.on("connect_error", () => {
-  console.log(`${new Date()}::Server Unavailable`);
-  if (EnableAlertOnce) {
-    const options = {
-      title: "Live Eye Surveillance",
-      subtitle: "Failure",
-      message: `Push Button Alert Server is Unavailable`,
-      icon: path.join(__dirname, "logo.png"),
-      sound: "Notification.Looping.Alarm"
-    };
-    try {
-      notifier.notify(options);
-    } catch (err) {
-      console.log(err);
-    }
-    EnableAlertOnce = false;
+  console.log(`${new Date()}::Alert Server is Unavailable.`);
+  const options = {
+    title: "Live Eye Surveillance",
+    subtitle: "Failure",
+    message: `Push Button Alert Server is Unavailable.`,
+    icon: path.join(__dirname, "logo.png"),
+    sound: "Notification.Looping.Alarm3"
+  };
+  try {
+    notifier.notify(options);
+  } catch (err) {
+    console.log(err);
   }
 });

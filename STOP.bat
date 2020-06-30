@@ -1,0 +1,17 @@
+@ECHO OFF
+PAUSE
+
+ECHO 'STOPPING SERVER.......'
+call pm2 stop liveeye-trigger-alert
+ECHO 'STEP COMPLETED'
+
+ECHO 'REMOVING PROCESS FROM WINDOWS STARTUP.....'
+call pm2 delete liveeye-trigger-alert
+ECHO 'STEP COMPLETED'
+
+ECHO 'REMOVING PROCESS FROM WINDOWS STARTUP.....'
+call pm2 cleardump
+ECHO 'STEP COMPLETED'
+
+PAUSE
+cmd /k
