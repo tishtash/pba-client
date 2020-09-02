@@ -16,6 +16,6 @@
     "node-notifier": "^6.0.0"
   },
   "devDependencies": {
-    "bestzip": "^2.1.5"
+    "bestzip": "^2.1.7"
   }
 }
